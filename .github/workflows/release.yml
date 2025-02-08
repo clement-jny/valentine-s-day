@@ -1,0 +1,75 @@
+name: 🚀 Auto Release
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release_notes:
+    name: Generate release notes
+    runs-on: ubuntu-latest
+
+    outputs:
+      release_body: ${{ steps.git-cliff.outputs.content }}
+      version: ${{ steps.git-cliff.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate a release notes
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff
+        with:
+          config: config-cliff.toml
+          args: --verbose --latest --strip header
+        env:
+          OUTPUT: CHANGES.md
+          GITHUB_REPO: ${{ github.repository }}
+
+      - name: Switch to main branch
+        run: |
+          git fetch origin main
+          git checkout main
+          git pull origin main
+
+      - name: Generate a new changelog
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff-generate
+        with:
+          config: config-cliff.toml
+          args: --verbose
+        env:
+          OUTPUT: CHANGELOG.md
+
+      - name: Commit updated ChangeLog
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit -m "docs(changelog): update CHANGELOG in Auto Release"
+          git push origin main
+
+  release:
+    name: Create & upload a release
+    needs: release_notes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ needs.release_notes.outputs.version }}
+          tag_name: ${{ github.ref }}
+          body: ${{ needs.release_notes.outputs.release_body }}
+          draft: false
+          prerelease: false
+        #   files: |
+        #     build/*
