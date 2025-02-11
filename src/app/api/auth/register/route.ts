@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
-import { getByUsername, addUser } from '@/actions/userAction';
+import { getByUsername, addUser } from '@/actions/user';
 import { registerSchema, TRegisterSchema } from '@/lib/zod-schemas';
 
 export const POST = async (request: NextRequest) => {
