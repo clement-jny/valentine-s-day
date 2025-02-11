@@ -57,48 +57,6 @@ body {
   animation: fadeInBounce 0.5s ease-out;
 }
 
-/* @keyframes fallingHearts {
-  0% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh);
-    opacity: 0;
-  }
-}
-
-.falling-hearts {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: fallingHearts 5s infinite;
-  font-size: 3rem;
-}
-
-.falling-hearts span {
-  position: absolute;
-  top: 0;
-  animation: fallingHearts 5s infinite ease-in-out;
-} */
-
-/* @keyframes fall {
-  0% {
-    transform: translateY(-100px);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh);
-    opacity: 0;
-  }
-}
-
-.emoji-fall {
-  font-size: 2rem;
-  animation: fall linear infinite;
-} */
-
 @layer base {
   :root {
     --background: 0 0% 100%;
