@@ -23,3 +23,6 @@ export const loginSchema = z.object({
     message: 'Your pin password must be 6 characters.',
   }),
 });
+
+export type TRegisterSchema = z.infer<typeof registerSchema>;
+export type TLoginSchema = z.infer<typeof loginSchema>;
