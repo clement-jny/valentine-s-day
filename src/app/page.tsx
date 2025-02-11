@@ -27,33 +27,35 @@ export default function Home() {
   const getRandomMessage = (messages: string[]) =>
     messages[Math.floor(Math.random() * messages.length)];
 
-  // const yesButtonRef = useRef<HTMLButtonElement>(null);
+  const yesButtonRef = useRef<HTMLButtonElement>(null);
   const noButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleYesClick = () => {
     setAnswer(true);
     setMessage(getRandomMessage(yesMessages));
-    setBackgroundClass('bg-pink-100 animate-hearts');
+    setBackgroundClass('bg-fuchsia-200 animate-hearts');
   };
   const handleNoClick = () => {
     setAnswer(false);
     setMessage(getRandomMessage(noMessages));
-    setBackgroundClass('bg-gray-900 animate-rain');
+    setBackgroundClass('bg-gray-800 animate-broken-hearts');
   };
 
   return (
     <main
-      className={`relative h-screen flex justify-center items-center transition-all duration-500 ${backgroundClass} bg-gradient-to-r from-pink-300 via-red-300 to-pink-500`}>
-      <div className='p-8 relative bg-pink-200 shadow-lg shadow-pink-200 rounded-lg'>
-        <h1 className='text-3xl font-bold text-pink-600 mb-4 text-center'>
+      className={`relative h-screen flex justify-center items-center transition-all duration-500 ${backgroundClass} bg-gradient-to-br from-pink-500 via-rose-300 to-purple-400`}>
+      <div className='p-8 relative bg-pink-200 rounded-lg'>
+        {/* min-w-[500px] min-h-[480px] */}
+        <h1 className='text-4xl font-bold text-pink-600 mb-6 text-center'>
           Will you be my Valentine?
         </h1>
 
         <div className='flex justify-center space-x-4 mb-4 relative'>
           <button
+            ref={yesButtonRef}
             type='button'
             onClick={handleYesClick}
-            className='shadow-lg bg-pink-300 text-pink-800 px-6 py-3 rounded-full border border-pink-300 hover:bg-pink-400 transition-all duration-200 transform hover:scale-110'>
+            className='shadow-lg bg-pink-300 text-pink-800 px-6 py-3 rounded-full border border-purple-400 transition-all duration-200 transform hover:bg-pink-400 hover:scale-110'>
             YES
           </button>
 
@@ -61,7 +63,7 @@ export default function Home() {
             ref={noButtonRef}
             type='button'
             onClick={handleNoClick}
-            className='shadow-lg bg-pink-300 text-pink-800 px-6 py-3 rounded-full border border-pink-300 hover:bg-pink-400 transition-all duration-200 transform hover:scale-110'>
+            className='shadow-lg bg-pink-300 text-pink-800 px-6 py-3 rounded-full border border-purple-400 transition-all duration-200 transform hover:bg-pink-400 hover:scale-110'>
             NO
           </button>
         </div>
