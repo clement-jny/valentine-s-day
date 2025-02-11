@@ -15,12 +15,12 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
-import { registerSchema } from '@/lib/schemas';
+import { registerSchema, TRegisterSchema } from '@/lib/zod-schemas';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
 const RegisterForm = () => {
-  const form = useForm<z.infer<typeof registerSchema>>({
+  const form = useForm<TRegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       username: '',
@@ -29,7 +29,7 @@ const RegisterForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof registerSchema>) => {
+  const onSubmit = (values: TRegisterSchema) => {
     console.log('register form');
     console.log(values);
   };
