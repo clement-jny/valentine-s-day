@@ -20,73 +20,36 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* HAPPY PART */
 @keyframes hearts {
   0% {
     background-position: 0 0;
   }
   100% {
-    background-position: 175px 175px;
+    background-position: 380px 380px;
   }
 }
-
-/* @keyframes floating {
-  0% {
-    transform: translateY(0px) scale(1);
-  }
-  50% {
-    transform: translateY(-5px) scale(1.02);
-  }
-  100% {
-    transform: translateY(0px) scale(1);
-  }
-} */
 
 .animate-hearts {
   background-image: url('/hearts-pattern.png');
-  background-size: 175px;
-  animation: hearts 5s linear infinite;
-  /* animation: hearts 5s linear infinite, floating 3s ease-in-out infinite; */
+  background-size: 380px;
+  animation: hearts 10s linear infinite;
 }
 
-@keyframes rain {
+/* SAD PART */
+@keyframes broken-hearts {
   0% {
     background-position: 0 0;
-    background-position: 0 -500px;
-  } /* Départ hors de l’écran */
-  100% {
-    background-position: 0 50px;
-    background-position: 0 0;
-  } /* Arrivée en position normale */
-}
-
-/* @keyframes shaking {
-  0% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(-1deg);
-  }
-  50% {
-    transform: rotate(1deg);
-  }
-  75% {
-    transform: rotate(-1deg);
   }
   100% {
-    transform: rotate(0deg);
+    background-position: -380px 380px;
   }
 }
 
-.shaking-effect {
-  animation: shaking 2s ease-in-out infinite;
-} */
-
-.animate-rain {
-  /* background-image: url('/rain_pattern.png'); */
-  background-image: url('/rain-pattern.png');
-  background-size: 300px;
-  /* background-size: 150px; */
-  animation: rain 3s linear infinite;
+.animate-broken-hearts {
+  background-image: url('/broken-hearts-pattern.png');
+  background-size: 380px;
+  animation: broken-hearts 10s linear infinite;
 }
 
 @keyframes fadeInBounce {
@@ -106,22 +69,6 @@ body {
 
 .fade-in-bounce {
   animation: fadeInBounce 0.5s ease-out;
-}
-
-@keyframes sad-animation {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(0.9);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.animate-sad {
-  animation: sad-animation 1s ease-in-out;
 }
 
 /* @keyframes fallingHearts {
@@ -150,7 +97,7 @@ body {
   animation: fallingHearts 5s infinite ease-in-out;
 } */
 
-@keyframes fall {
+/* @keyframes fall {
   0% {
     transform: translateY(-100px);
     opacity: 1;
@@ -164,4 +111,4 @@ body {
 .emoji-fall {
   font-size: 2rem;
   animation: fall linear infinite;
-}
+} */
