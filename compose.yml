@@ -1,0 +1,27 @@
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:lts # 8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - .mysql:/var/lib/mysql
+    ports:
+      - ${MYSQL_HOST_PORT}:${MYSQL_DOCKER_PORT}
+    restart: always
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin:5.2.1
+    environment:
+      PMA_HOST: ${DB_HOST}
+    ports:
+      - ${PMA_HOST_PORT}:${PMA_DOCKER_PORT}
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    restart: always
