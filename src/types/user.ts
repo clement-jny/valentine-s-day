@@ -1,4 +1,4 @@
-export type userType = {
+export type TUser = {
   uuid: number;
   username: string;
   firstname: string;
