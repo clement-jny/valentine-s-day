@@ -19,3 +19,96 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* HAPPY PART */
+@keyframes hearts {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 380px 380px;
+  }
+}
+
+.animate-hearts {
+  background-image: url('/hearts-pattern.png');
+  background-size: 380px;
+  animation: hearts 10s linear infinite;
+}
+
+/* SAD PART */
+@keyframes broken-hearts {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -380px 380px;
+  }
+}
+
+.animate-broken-hearts {
+  background-image: url('/broken-hearts-pattern.png');
+  background-size: 380px;
+  animation: broken-hearts 10s linear infinite;
+}
+
+@keyframes fadeInBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fade-in-bounce {
+  animation: fadeInBounce 0.5s ease-out;
+}
+
+/* @keyframes fallingHearts {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+.falling-hearts {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: fallingHearts 5s infinite;
+  font-size: 3rem;
+}
+
+.falling-hearts span {
+  position: absolute;
+  top: 0;
+  animation: fallingHearts 5s infinite ease-in-out;
+} */
+
+/* @keyframes fall {
+  0% {
+    transform: translateY(-100px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+.emoji-fall {
+  font-size: 2rem;
+  animation: fall linear infinite;
+} */
