@@ -4,8 +4,9 @@ import jwt from 'jsonwebtoken';
 export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
+    console.log(body);
 
-    const token = body.token;
+    const token = body.authToken;
     const secret = process.env.JWT_SECRET;
 
     if (!token) {
