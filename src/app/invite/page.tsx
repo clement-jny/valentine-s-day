@@ -45,8 +45,12 @@ const InvitePage = () => {
         body: JSON.stringify({ ref, status }),
       });
 
-      if (!response.ok) {
-        console.error('Failed to update invitation status');
+      const apiReturn: TApiCall = await response.json();
+
+      if (apiReturn.success) {
+        // toast.success(apiReturn.message);
+      } else {
+        // toast.success(apiReturn.message);
       }
     } catch (error) {
       console.error('Error updating invitation status:', error);
