@@ -113,8 +113,10 @@ export const Dashboard = () => {
                 <div
                   key={invite.uuid}
                   className='p-4 bg-pink-50 border border-pink-200 rounded-lg'>
-                  <p className='text-pink-700 font-semibold'>{invite.name}</p>
-                  <p className='text-pink-600'>{invite.message}</p>
+                  <p className='text-pink-700'>
+                    For: <span className='font-semibold'>{invite.name}</span>
+                  </p>
+                  <p className='text-pink-600'>Message: {invite.message}</p>
                   <p className='text-pink-500'>Ref: {invite.ref}</p>
                   <p className='text-pink-500'>
                     Date: {new Date(invite.createdAt!).toLocaleDateString()}
