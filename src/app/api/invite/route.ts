@@ -59,7 +59,11 @@ export const GET = async (
     const data = await getInvitationByRef(ref);
 
     return NextResponse.json(
-      { success: true, message: '', data },
+      {
+        success: true,
+        message: 'Invitation fetched successfully',
+        data: { invitation: data },
+      },
       { status: 200 }
     );
   }
