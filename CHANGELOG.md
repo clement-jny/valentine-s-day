@@ -9,17 +9,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- *(api)* Implement new type and return structured data
+- Structure api call and display toast
+- Structure api call and display toast
+- *(api)* Implement new type and return structured data
+- Structure api call and display toast
+- *(api)* Implement new type and return structured data
+- *(api)* Implement new type and return structured data
+- Structure api call and display toast
+- *(api)* Implement new type and return structured data
+- Structure api call and display toast
+- Structure api call and display toast
+- *(api)* Implement new type and return structured data
+- Implement Toaster
+- *(api)* Use new type and return correctly
+- Add toast and display messages
+- *(type)* Add new type for api return
+- Add toast
 - Update invit status on invite page
 - *(api)* New route for updating status
 - Add new method in action to change status
 
 ### Changed
 
+- *(api)* Rename type
+- Update delay
 - *(type)* Update type and enum
 
 ### Documentation
 
+- *(changelog)* Update CHANGELOG in Auto Changelog
 - *(changelog)* Update CHANGELOG in Auto Release
+
+### Maintenance
+
+- Remove confirmation message if click again on button
 
 ## [1.0.0] - 2025-02-12
 
