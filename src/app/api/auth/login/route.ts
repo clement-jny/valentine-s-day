@@ -31,7 +31,7 @@ export const POST = async (request: NextRequest) => {
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }); // Le token expire dans 1 heure
 
     return NextResponse.json(
-      { message: 'Login successful', user, token },
+      { message: 'Login successful', token },
       { status: 200 }
     );
   } catch (error) {

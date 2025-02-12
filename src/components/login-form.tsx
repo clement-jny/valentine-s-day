@@ -17,14 +17,8 @@ import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { loginSchema, TLoginSchema } from '@/lib/zod-schemas';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { useAuth } from '@/context/AuthContext';
-import { type TUser } from '@/types/user';
-// import { useRouter } from 'next/router';
 
 const LoginForm = () => {
-  const { setAuth } = useAuth();
-  // const router = useRouter();
-
   const form = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -46,16 +40,11 @@ const LoginForm = () => {
     if (response.ok) {
       const data = await response.json();
       console.log(data);
+      const { token } = data as { token: string };
+      localStorage.setItem('authToken', token);
+      location.reload();
 
       // TODO: toast success
-
-      const { user, token } = data as { user: TUser; token: string };
-
-      setAuth(user, token);
-
-      // TODO: redirect on dashboard
-      // router.push('/dashboard');
-      window.location.href = '/dashboard';
     } else {
       // Gestion des erreurs d'authentification
       console.log('KO');
