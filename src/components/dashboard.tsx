@@ -130,7 +130,7 @@ export const Dashboard = () => {
                   <p className='text-pink-600'>Message: {invite.message}</p>
                   <p className='text-pink-500'>Ref: {invite.ref}</p>
                   <p className='text-pink-500'>
-                    Date: {new Date(invite.createdAt!).toLocaleDateString()}
+                    Date: {new Date(invite.createdAt).toLocaleDateString()}
                   </p>
                   <a
                     href={invite.accessLink}

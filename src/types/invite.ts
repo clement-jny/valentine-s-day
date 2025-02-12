@@ -6,6 +6,6 @@ export type TInvite = {
   message: string;
   response?: string;
   accessLink: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  status: boolean;
+  createdAt: Date;
 };
