@@ -4,7 +4,7 @@ import { type TApiCall } from '@/types/api-call';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-type TMeBody = {
+type TMeGetBody = {
   authToken: string;
 };
 
@@ -12,7 +12,7 @@ export const POST = async (
   request: NextRequest
 ): Promise<NextResponse<TApiCall>> => {
   try {
-    const body = (await request.json()) as TMeBody;
+    const body = (await request.json()) as TMeGetBody;
     const { authToken } = body;
 
     if (!authToken) {
