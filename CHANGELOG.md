@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- Use auth context
+- On success login save data and redirect
+- *(api)* Implement jwt
+- *(context)* Create auth context
+- Call auth api
+- Add jwt package
+- *(api)* Create login auth route
+- *(api)* Create register auth route
+- Use new schema type
+- Rename file & add type
+- *(db)* Create user type
+- *(db)* Config user schema
+- *(db)* Config drizzle db
 - Add bcrypt
 - Drizzle config
 - Add drizzle with mysql
@@ -33,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Prettier
 - Add message on login / register schema
 - Cleanup
 
@@ -40,9 +54,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - *(changelog)* Update CHANGELOG in Auto Changelog
 - *(changelog)* Update CHANGELOG in Auto Changelog
+- *(changelog)* Update CHANGELOG in Auto Changelog
 
 ### Maintenance
 
+- Update user actions call
+- *(actions)* Rename file
+- *(type)* Rename file
 - Remove typeorm
 
 ### Other
