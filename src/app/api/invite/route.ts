@@ -16,6 +16,11 @@ type TInvitePostBody = {
   authToken: string;
 };
 
+type TInvitePatchBody = {
+  ref: string;
+  response: 'yes' | 'no';
+};
+
 export const GET = async (
   request: NextRequest
 ): Promise<NextResponse<TApiCall>> => {
@@ -96,20 +101,23 @@ export const POST = async (
   }
 };
 
-export const PATCH = async (request: NextRequest) => {
+export const PATCH = async (
+  request: NextRequest
+): Promise<NextResponse<TApiCall>> => {
   try {
-    const { ref, response } = (await request.json()) as {
-      ref: string;
-      response: 'yes' | 'no';
-    };
+    const body = (await request.json()) as TInvitePatchBody;
+    const { ref, response } = body;
 
     await updateInvitation(ref, response);
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    return NextResponse.json(
+      { success: true, message: 'Invitation updated successfully' },
+      { status: 200 }
+    );
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(
-      { error: 'Failed to update invitation' },
+      { success: false, message: 'Failed to update invitation' },
       { status: 500 }
     );
   }
