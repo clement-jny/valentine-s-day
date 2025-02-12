@@ -84,6 +84,7 @@ export const Dashboard = () => {
     if (response.ok) {
       const data = await response.json();
       console.log(data);
+      location.reload();
 
       // TODO: toast success
     } else {
@@ -98,6 +99,16 @@ export const Dashboard = () => {
       <div className='max-w-2xl mx-auto space-y-6'>
         <div className='text-center text-pink-600 text-4xl font-bold'>
           Welcome, {username && username}!
+        </div>
+        <div className='text-center mt-4'>
+          <Button
+            className='bg-pink-500 hover:bg-pink-600 text-white rounded-lg py-2'
+            onClick={() => {
+              localStorage.removeItem('authToken');
+              location.reload();
+            }}>
+            Logout
+          </Button>
         </div>
 
         <Card className='bg-white shadow-xl rounded-xl p-6'>
