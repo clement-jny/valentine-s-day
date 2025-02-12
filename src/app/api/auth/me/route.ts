@@ -1,28 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
+import { type TApiCall } from '@/types/api-call';
 
-export const POST = async (request: NextRequest) => {
+const JWT_SECRET = process.env.JWT_SECRET;
+
+type TMeBody = {
+  authToken: string;
+};
+
+export const POST = async (
+  request: NextRequest
+): Promise<NextResponse<TApiCall>> => {
   try {
-    const body = await request.json();
-    console.log(body);
+    const body = (await request.json()) as TMeBody;
+    const { authToken } = body;
 
-    const token = body.authToken;
-    const secret = process.env.JWT_SECRET;
-
-    if (!token) {
-      return NextResponse.json({ error: 'No token provided' }, { status: 400 });
+    if (!authToken) {
+      return NextResponse.json(
+        { success: false, message: 'No token provided' },
+        { status: 400 }
+      );
     }
 
-    const decoded = jwt.verify(token, secret);
+    // TODO: fix to build
+    const decoded = jwt.verify(authToken, JWT_SECRET);
 
     return NextResponse.json({
-      userId: decoded.userId,
-      username: decoded.username,
+      success: true,
+      message: 'Token successfully verified',
+      data: {
+        userId: decoded.userId as number,
+        username: decoded.username as string,
+      },
     });
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(
-      { error: 'Something went wrong' },
+      { success: false, message: 'Something went wrong' },
       { status: 500 }
     );
   }
