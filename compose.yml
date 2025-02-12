@@ -6,8 +6,6 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
       BASE_URL: ${BASE_URL}
-    ports:
-      - 3000:3000
     volumes:
       - .:/app
       - /app/node_modules
@@ -17,15 +15,15 @@ services:
       - mysql
     depends_on:
       - mysql
-  networks:
-    - traefik_default
-  labels:
-    - traefik.enable=true
-    - traefik.http.routers.lovely_www.entrypoints=websecure
-    - traefik.http.routers.lovely_www.tls=true
-    - traefik.http.routers.lovely_www.tls.certresolver=production
-    - traefik.http.routers.lovely_www.rule=Host(`lovely.clement-jny.fr`)
-    - traefik.http.services.lovely_www.loadbalancer.server.port=80
+    networks:
+      - traefik_default
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.lovely_www.entrypoints=websecure
+      - traefik.http.routers.lovely_www.tls=true
+      - traefik.http.routers.lovely_www.tls.certresolver=production
+      - traefik.http.routers.lovely_www.rule=Host(`lovely.clement-jny.fr`)
+      - traefik.http.services.lovely_www.loadbalancer.server.port=80
 
   mysql:
     container_name: mysql
@@ -36,7 +34,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - .mysql:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     ports:
       - ${MYSQL_HOST_PORT}:${MYSQL_DOCKER_PORT}
     restart: always
@@ -53,6 +51,10 @@ services:
     depends_on:
       - mysql
     restart: always
+
+volumes:
+  mysql_data:
+    driver: local
 
 networks:
   traefik_default:
