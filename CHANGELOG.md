@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- Add logout button
+- *(db)* Use new column status
+- *(db)* Add status on invite
+- *(api)* Create invite api route : get - post
+- *(db)* Update object name
+- Create invite schema
+- Auto reload page
+- Create invite action
+- *(ui)* Add textarea
+- *(type)* Create new invite type
+- *(db)* Create a new table
+- *(api)* Me by token
+- *(ui)* Add dialog component
 - Use auth context
 - On success login save data and redirect
 - *(api)* Implement jwt
@@ -46,6 +59,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- *(type)* Update TInvite
+- Add more details
+- Get token from local and display
+- *(api)* Get authToken from body
+- *(api)* Return only token
+- Redirect
 - Prettier
 - Add message on login / register schema
 - Cleanup
@@ -55,9 +74,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - *(changelog)* Update CHANGELOG in Auto Changelog
 - *(changelog)* Update CHANGELOG in Auto Changelog
 - *(changelog)* Update CHANGELOG in Auto Changelog
+- *(changelog)* Update CHANGELOG in Auto Changelog
 
 ### Maintenance
 
+- Dashboard is now a component
+- Remove auth context call, set token in local and reload
+- Remove auth context call
 - Update user actions call
 - *(actions)* Rename file
 - *(type)* Rename file
@@ -65,5 +88,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Other
 
+- *(other)* Delete auth context
 - *(other)* Initial commit from Create Next App
 
