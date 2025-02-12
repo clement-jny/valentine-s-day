@@ -15,7 +15,7 @@ export const userTable = mysqlTable('user', {
   updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(), // Date de mise à jour
 });
 
-export const invites = mysqlTable('invite', {
+export const inviteTable = mysqlTable('invite', {
   uuid: int().primaryKey().autoincrement(),
   userId: int('user_id')
     .notNull()
