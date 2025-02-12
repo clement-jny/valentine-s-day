@@ -17,11 +17,13 @@ import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { loginSchema, TLoginSchema } from '@/lib/zod-schemas';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-// import { useAuth } from '@/context/AuthContext';
-// import { type TUser } from '@/types/user';
+import { useAuth } from '@/context/AuthContext';
+import { type TUser } from '@/types/user';
+// import { useRouter } from 'next/router';
 
 const LoginForm = () => {
-  // const { setAuth } = useAuth();
+  const { setAuth } = useAuth();
+  // const router = useRouter();
 
   const form = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -47,10 +49,13 @@ const LoginForm = () => {
 
       // TODO: toast success
 
-      // const { token, user } = data;
+      const { user, token } = data as { user: TUser; token: string };
 
-      // Mettre à jour le contexte avec le JWT et l'utilisateur
-      // setAuth(user, token);
+      setAuth(user, token);
+
+      // TODO: redirect on dashboard
+      // router.push('/dashboard');
+      window.location.href = '/dashboard';
     } else {
       // Gestion des erreurs d'authentification
       console.log('KO');
