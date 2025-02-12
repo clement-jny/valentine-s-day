@@ -60,13 +60,17 @@ export const Dashboard = () => {
     const fetchInvitations = async () => {
       const response = await fetch(`/api/invite?authToken=${authToken}`);
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setInvitations(data.data);
+      const apiReturn: TApiCall = await response.json();
+
+      if (apiReturn.success) {
+        // toast.success(apiReturn.message);
+
+        const { invitations } = apiReturn.data as { invitations: TInvite[] };
+
+        console.log(invitations);
+        setInvitations(invitations);
       } else {
-        // Gestion des erreurs d'authentification
-        console.log('KO');
+        toast.error(apiReturn.message);
       }
     };
     fetchInvitations();
