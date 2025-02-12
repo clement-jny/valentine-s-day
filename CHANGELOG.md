@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- Use dockerfile build and add traefik
+- Ignore for docker
+- Create Dockerfile
 - *(api)* Implement new type and return structured data
 - Structure api call and display toast
 - Structure api call and display toast
@@ -39,7 +42,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Documentation
 
 - *(changelog)* Update CHANGELOG in Auto Changelog
+- *(changelog)* Update CHANGELOG in Auto Changelog
 - *(changelog)* Update CHANGELOG in Auto Release
+
+### Fixed
+
+- Jwt todo
 
 ### Maintenance
 
