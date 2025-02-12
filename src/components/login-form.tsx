@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import {
   Form,
   FormControl,
@@ -15,12 +14,18 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
-import { loginSchema } from '@/lib/schemas';
+import { loginSchema, TLoginSchema } from '@/lib/zod-schemas';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import { useAuth } from '@/context/AuthContext';
+import { type TUser } from '@/types/user';
+// import { useRouter } from 'next/router';
 
 const LoginForm = () => {
-  const form = useForm<z.infer<typeof loginSchema>>({
+  const { setAuth } = useAuth();
+  // const router = useRouter();
+
+  const form = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       username: '',
@@ -28,9 +33,34 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof loginSchema>) => {
+  const onSubmit = async (values: TLoginSchema) => {
     console.log('login form');
     console.log(values);
+
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ ...values }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+
+      // TODO: toast success
+
+      const { user, token } = data as { user: TUser; token: string };
+
+      setAuth(user, token);
+
+      // TODO: redirect on dashboard
+      // router.push('/dashboard');
+      window.location.href = '/dashboard';
+    } else {
+      // Gestion des erreurs d'authentification
+      console.log('KO');
+      // TODO: toast error from response
+    }
   };
 
   return (

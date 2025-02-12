@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import {
   Form,
   FormControl,
@@ -15,12 +14,12 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
-import { registerSchema } from '@/lib/schemas';
+import { registerSchema, TRegisterSchema } from '@/lib/zod-schemas';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
 const RegisterForm = () => {
-  const form = useForm<z.infer<typeof registerSchema>>({
+  const form = useForm<TRegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       username: '',
@@ -29,9 +28,26 @@ const RegisterForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof registerSchema>) => {
+  const onSubmit = async (values: TRegisterSchema) => {
     console.log('register form');
     console.log(values);
+
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ ...values }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+
+      // TODO: toast success
+    } else {
+      // Gestion des erreurs d'authentification
+      console.log('KO');
+      // TODO: toast error from response
+    }
   };
 
   return (
