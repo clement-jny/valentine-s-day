@@ -6,8 +6,6 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
       BASE_URL: ${BASE_URL}
-    ports:
-      - 3000:3000
     volumes:
       - .:/app
       - /app/node_modules
