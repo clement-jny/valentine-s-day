@@ -128,15 +128,21 @@ const InvitePage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ref: invite.ref, // Assure-toi que 'invite.ref' est bien présent
-          response: selectedButton, // 'yes' ou 'no'
+          ref: invite.ref,
+          response: selectedButton,
         }),
       });
 
-      if (response.ok) {
+      const apiReturn: TApiCall = await response.json();
+
+      if (apiReturn.success) {
+        // toast.success(apiReturn.message);
+
         setConfirmationMessage('Your response has been successfully sent! 🎉');
         updateInvitationStatus(invite.ref, 'COMPLETED');
       } else {
+        // toast.success(apiReturn.message);
+
         setConfirmationMessage(
           'Oops, something went wrong. Please try again! 😿'
         );
