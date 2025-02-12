@@ -41,6 +41,7 @@ const RegisterForm = () => {
     if (response.ok) {
       const data = await response.json();
       console.log(data);
+      location.reload();
 
       // TODO: toast success
     } else {
