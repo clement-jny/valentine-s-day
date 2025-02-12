@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { type Secret } from 'jsonwebtoken';
 import { getByUsername } from '@/actions/user';
 import { loginSchema, TLoginSchema } from '@/lib/zod-schemas';
 import { type TApiCall } from '@/types/api-call';
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET as Secret;
 
 export const POST = async (
   request: NextRequest
@@ -34,7 +34,6 @@ export const POST = async (
 
     // Générer un JWT après la validation des identifiants
     const payload = { userId: user.uuid, username: user.username };
-    // TODO: fix to build
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' }); // Le token expire dans 24 heure
 
     return NextResponse.json(

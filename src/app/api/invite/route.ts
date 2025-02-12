@@ -5,10 +5,10 @@ import {
   getInvitationByRef,
   updateInvitation,
 } from '@/actions/invite';
-import jwt from 'jsonwebtoken';
+import jwt, { type Secret, JwtPayload } from 'jsonwebtoken';
 import { type TApiCall } from '@/types/api-call';
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET as Secret;
 
 type TInvitePostBody = {
   name: string;
@@ -35,8 +35,10 @@ export const GET = async (
           { status: 400 }
         );
 
-      // TODO: fix to build
-      const decoded = jwt.verify(authToken, JWT_SECRET);
+      const decoded = jwt.verify(authToken, JWT_SECRET) as JwtPayload & {
+        userId: number;
+        username: string;
+      };
 
       const data = await getInvitationsByUserId(Number(decoded.userId));
 
@@ -87,8 +89,10 @@ export const POST = async (
         { status: 400 }
       );
 
-    // TODO: fix to build
-    const decoded = jwt.verify(authToken, JWT_SECRET);
+    const decoded = jwt.verify(authToken, JWT_SECRET) as JwtPayload & {
+      userId: number;
+      username: string;
+    };
 
     await addInvitation(decoded.userId, name, message);
 
