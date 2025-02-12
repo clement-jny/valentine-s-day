@@ -94,16 +94,15 @@ export const Dashboard = () => {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      location.reload();
+    const apiReturn: TApiCall = await response.json();
 
-      // TODO: toast success
+    if (apiReturn.success) {
+      toast.success(apiReturn.message);
+      toast.success('Reloading... Please wait.');
+
+      setTimeout(() => location.reload(), 1000);
     } else {
-      // Gestion des erreurs d'authentification
-      console.log('KO');
-      // TODO: toast error from response
+      toast.error(apiReturn.message);
     }
   };
 
