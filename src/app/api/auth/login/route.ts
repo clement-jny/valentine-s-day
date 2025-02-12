@@ -3,10 +3,13 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { getByUsername } from '@/actions/user';
 import { loginSchema, TLoginSchema } from '@/lib/zod-schemas';
+import { type TApiCall } from '@/types/api-call';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-export const POST = async (request: NextRequest) => {
+export const POST = async (
+  request: NextRequest
+): Promise<NextResponse<TApiCall>> => {
   try {
     const body = (await request.json()) as TLoginSchema;
     const { username, pin } = loginSchema.parse(body);
@@ -14,30 +17,34 @@ export const POST = async (request: NextRequest) => {
     // Vérifier si l'utilisateur existe
     const user = await getByUsername(username);
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, message: 'User not found' },
+        { status: 404 }
+      );
     }
 
     // Vérifier le PIN
     const isValid = await bcrypt.compare(pin, user.pin);
     if (!isValid) {
       return NextResponse.json(
-        { error: 'Invalid credentials' },
+        { success: false, message: 'Invalid credentials' },
         { status: 401 }
       );
     }
 
     // Générer un JWT après la validation des identifiants
     const payload = { userId: user.uuid, username: user.username };
+    // TODO: fix to build
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' }); // Le token expire dans 24 heure
 
     return NextResponse.json(
-      { message: 'Login successful', token },
+      { success: true, message: 'Login successful', data: { token } },
       { status: 200 }
     );
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(
-      { error: 'Something went wrong' },
+      { success: false, message: 'Something went wrong' },
       { status: 500 }
     );
   }
