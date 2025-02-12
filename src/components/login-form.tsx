@@ -55,7 +55,7 @@ const LoginForm = () => {
 
       // TODO: redirect on dashboard
       // router.push('/dashboard');
-      window.location.href = '/dashboard';
+      location.href = '/dashboard';
     } else {
       // Gestion des erreurs d'authentification
       console.log('KO');

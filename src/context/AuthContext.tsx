@@ -3,6 +3,8 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { type TUser } from '@/types/user';
 
+// import { useRouter } from 'next/router';
+
 type AuthContextType = {
   user: TUser | null;
   token: string | null;
@@ -21,6 +23,8 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  // const router = useRouter();
+
   const [user, setUser] = useState<TUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
@@ -29,6 +33,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setToken(token);
 
     localStorage.setItem('authToken', token);
+
+    // router.push('/dashboard');
   };
 
   const logout = () => {
@@ -36,6 +42,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setToken(null);
 
     localStorage.removeItem('authToken');
+
+    location.href = '/';
   };
 
   return (
