@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { type TInvite } from '@/types/invite';
+import { EStatus, type TInvite } from '@/types/invite';
 import { useEffect, useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -30,6 +30,27 @@ const InvitePage = () => {
   const yesButtonRef = useRef<HTMLButtonElement>(null);
   const noButtonRef = useRef<HTMLButtonElement>(null);
 
+  const updateInvitationStatus = async (
+    ref: string,
+    status: keyof typeof EStatus
+  ) => {
+    try {
+      const response = await fetch(`/api/invite/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ref, status }),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to update invitation status');
+      }
+    } catch (error) {
+      console.error('Error updating invitation status:', error);
+    }
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const refParam = params.get('ref');
@@ -45,6 +66,7 @@ const InvitePage = () => {
 
         if (Object.keys(data).length === 0) location.href = '/';
         setInvite(data.data);
+        updateInvitationStatus(data.data.ref, 'OPEN');
       } else {
         console.log('KO');
       }
@@ -104,6 +126,7 @@ const InvitePage = () => {
 
       if (response.ok) {
         setConfirmationMessage('Your response has been successfully sent! 🎉');
+        updateInvitationStatus(invite.ref, 'COMPLETED');
       } else {
         setConfirmationMessage(
           'Oops, something went wrong. Please try again! 😿'
