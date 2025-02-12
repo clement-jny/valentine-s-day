@@ -38,6 +38,8 @@ services:
     ports:
       - ${MYSQL_HOST_PORT}:${MYSQL_DOCKER_PORT}
     restart: always
+    networks:
+      - traefik_default
 
   phpmyadmin:
     container_name: phpmyadmin
@@ -51,6 +53,8 @@ services:
     depends_on:
       - mysql
     restart: always
+    networks:
+      - traefik_default
 
 volumes:
   mysql_data:
