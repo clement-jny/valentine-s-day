@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
+import jwt, { type Secret, JwtPayload } from 'jsonwebtoken';
 import { type TApiCall } from '@/types/api-call';
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET as Secret;
 
 type TMeGetBody = {
   authToken: string;
@@ -22,15 +22,17 @@ export const POST = async (
       );
     }
 
-    // TODO: fix to build
-    const decoded = jwt.verify(authToken, JWT_SECRET);
+    const decoded = jwt.verify(authToken, JWT_SECRET) as JwtPayload & {
+      userId: number;
+      username: string;
+    };
 
     return NextResponse.json({
       success: true,
       message: 'Token successfully verified',
       data: {
-        userId: decoded.userId as number,
-        username: decoded.username as string,
+        userId: decoded.userId,
+        username: decoded.username,
       },
     });
   } catch (error) {
