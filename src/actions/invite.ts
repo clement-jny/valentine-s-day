@@ -3,6 +3,7 @@
 // import { revalidatePath } from 'next/cache';
 import { db } from '@/db';
 import { inviteTable } from '@/db/schema';
+import { EStatus } from '@/types/invite';
 import { eq } from 'drizzle-orm';
 import { randomBytes } from 'node:crypto';
 
@@ -39,5 +40,22 @@ export const updateInvitation = async (ref: string, response: string) => {
   await db
     .update(inviteTable)
     .set({ response })
+    .where(eq(inviteTable.ref, ref));
+};
+
+export const updateInvitationStatus = async (
+  ref: string,
+  newStatus: keyof typeof EStatus
+) => {
+  const invitation = await db
+    .select()
+    .from(inviteTable)
+    .where(eq(inviteTable.ref, ref));
+
+  if (invitation[0].status === 'COMPLETED' && newStatus === 'OPEN') return;
+
+  await db
+    .update(inviteTable)
+    .set({ status: newStatus })
     .where(eq(inviteTable.ref, ref));
 };

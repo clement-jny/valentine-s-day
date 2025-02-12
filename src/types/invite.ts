@@ -6,11 +6,11 @@ export type TInvite = {
   message: string;
   response?: string;
   accessLink: string;
-  status: StatusEnum;
+  status: EStatus;
   createdAt: Date;
 };
 
-enum StatusEnum {
+export enum EStatus {
   NOT_OPEN,
   OPEN,
   COMPLETED,
