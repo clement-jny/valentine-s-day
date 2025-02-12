@@ -12,6 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { type TApiCall } from '@/types/api-call';
+import toast from 'react-hot-toast';
 
 const InvitePage = () => {
   const [invite, setInvite] = useState<TInvite | null>(null);
@@ -60,15 +62,20 @@ const InvitePage = () => {
     const fetchInvite = async () => {
       const response = await fetch(`/api/invite?ref=${refParam}`);
 
-      if (response.ok) {
-        const data = (await response.json()) as TInvite;
-        console.log(data);
+      const apiReturn: TApiCall = await response.json();
 
-        if (Object.keys(data).length === 0) location.href = '/';
-        setInvite(data.data);
-        updateInvitationStatus(data.data.ref, 'OPEN');
+      if (apiReturn.success) {
+        // toast.success(apiReturn.message);
+
+        const { invitation } = apiReturn.data as { invitation: TInvite };
+
+        console.log(invitation);
+        if (invitation === undefined) location.href = '/';
+
+        setInvite(invitation);
+        updateInvitationStatus(invitation.ref, 'OPEN');
       } else {
-        console.log('KO');
+        toast.error(apiReturn.message);
       }
     };
     fetchInvite();
