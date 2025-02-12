@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [2.0.0] - 2025-02-12
 
 ### Added
 
@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Documentation
 
+- *(changelog)* Update CHANGELOG in Auto Changelog
 - *(changelog)* Update CHANGELOG in Auto Changelog
 - *(changelog)* Update CHANGELOG in Auto Changelog
 - *(changelog)* Update CHANGELOG in Auto Release
@@ -150,6 +151,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - *(other)* Delete auth context
 - *(other)* Initial commit from Create Next App
 
-[unreleased]: https://github.com/clement-jny/valentine-s-day/compare/v1.0.0..HEAD
+[2.0.0]: https://github.com/clement-jny/valentine-s-day/compare/v1.0.0..v2.0.0
 [1.0.0]: https://github.com/clement-jny/valentine-s-day/releases/tag/v1.0.0
 
