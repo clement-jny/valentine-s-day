@@ -10,6 +10,12 @@ import { type TApiCall } from '@/types/api-call';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+type TInvitePostBody = {
+  name: string;
+  message: string;
+  authToken: string;
+};
+
 export const GET = async (
   request: NextRequest
 ): Promise<NextResponse<TApiCall>> => {
@@ -59,23 +65,32 @@ export const GET = async (
   );
 };
 
-export const POST = async (request: NextRequest) => {
+export const POST = async (
+  request: NextRequest
+): Promise<NextResponse<TApiCall>> => {
   try {
-    const { name, message, authToken } = await request.json();
+    const body = (await request.json()) as TInvitePostBody;
+    const { name, message, authToken } = body;
 
     if (!name || !message)
-      return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: 'Missing fields' },
+        { status: 400 }
+      );
 
     // TODO: fix to build
     const decoded = jwt.verify(authToken, JWT_SECRET);
 
     await addInvitation(decoded.userId, name, message);
 
-    return NextResponse.json({ success: true }, { status: 201 });
+    return NextResponse.json(
+      { success: true, message: 'Invitation created successfully' },
+      { status: 201 }
+    );
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(
-      { error: 'Failed to create invitation' },
+      { success: false, message: 'Failed to create invitation' },
       { status: 500 }
     );
   }
