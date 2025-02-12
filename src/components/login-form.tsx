@@ -17,6 +17,8 @@ import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { loginSchema, TLoginSchema } from '@/lib/zod-schemas';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import toast from 'react-hot-toast';
+import { type TApiCall } from '@/types/api-call';
 
 const LoginForm = () => {
   const form = useForm<TLoginSchema>({
@@ -37,18 +39,19 @@ const LoginForm = () => {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      const { token } = data as { token: string };
-      localStorage.setItem('authToken', token);
-      location.reload();
+    const apiReturn: TApiCall = await response.json();
 
-      // TODO: toast success
+    if (apiReturn.success) {
+      toast.success(apiReturn.message);
+
+      const { token } = apiReturn.data as { token: string };
+
+      localStorage.setItem('authToken', token);
+      toast.success('Redirecting... Please wait.');
+
+      setTimeout(() => location.reload(), 1000);
     } else {
-      // Gestion des erreurs d'authentification
-      console.log('KO');
-      // TODO: toast error from response
+      toast.error(apiReturn.message);
     }
   };
 

@@ -2,8 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { getByUsername, addUser } from '@/actions/user';
 import { registerSchema, TRegisterSchema } from '@/lib/zod-schemas';
+import { type TApiCall } from '@/types/api-call';
 
-export const POST = async (request: NextRequest) => {
+export const POST = async (
+  request: NextRequest
+): Promise<NextResponse<TApiCall>> => {
   try {
     const body = (await request.json()) as TRegisterSchema;
     const { username, firstname, pin } = registerSchema.parse(body);
@@ -13,7 +16,7 @@ export const POST = async (request: NextRequest) => {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'Username already taken' },
+        { success: false, message: 'Username already taken' },
         { status: 400 }
       );
     }
@@ -24,13 +27,13 @@ export const POST = async (request: NextRequest) => {
     await addUser(username, firstname, hashedPin);
 
     return NextResponse.json(
-      { message: 'User created successfully' },
+      { success: true, message: 'User created successfully' },
       { status: 201 }
     );
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(
-      { error: 'Something went wrong' },
+      { success: false, message: 'Something went wrong' },
       { status: 500 }
     );
   }

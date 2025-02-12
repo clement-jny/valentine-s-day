@@ -6,10 +6,24 @@ import {
   updateInvitation,
 } from '@/actions/invite';
 import jwt from 'jsonwebtoken';
+import { type TApiCall } from '@/types/api-call';
 
-const secret = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET;
 
-export const GET = async (request: NextRequest) => {
+type TInvitePostBody = {
+  name: string;
+  message: string;
+  authToken: string;
+};
+
+type TInvitePatchBody = {
+  ref: string;
+  response: 'yes' | 'no';
+};
+
+export const GET = async (
+  request: NextRequest
+): Promise<NextResponse<TApiCall>> => {
   const authToken = request.nextUrl.searchParams.get('authToken');
   const ref = request.nextUrl.searchParams.get('ref');
 
@@ -17,64 +31,97 @@ export const GET = async (request: NextRequest) => {
     try {
       if (!authToken)
         return NextResponse.json(
-          { error: 'Missing authToken' },
+          { success: false, message: 'Missing authToken' },
           { status: 400 }
         );
 
-      const decoded = jwt.verify(authToken, secret);
+      // TODO: fix to build
+      const decoded = jwt.verify(authToken, JWT_SECRET);
 
       const data = await getInvitationsByUserId(Number(decoded.userId));
 
-      return NextResponse.json({ data }, { status: 200 });
+      return NextResponse.json(
+        {
+          success: true,
+          message: 'Invitations fetched successfully',
+          data: { invitations: data },
+        },
+        { status: 200 }
+      );
     } catch (error) {
       console.error('Error:', error);
       return NextResponse.json(
-        { error: 'Failed to fetch invitations' },
+        { success: false, message: 'Failed to fetch invitations' },
         { status: 500 }
       );
     }
   } else if (ref) {
     const data = await getInvitationByRef(ref);
 
-    return NextResponse.json({ data }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Invitation fetched successfully',
+        data: { invitation: data },
+      },
+      { status: 200 }
+    );
   }
+
+  return NextResponse.json(
+    { success: false, message: 'Missing authToken or ref' },
+    { status: 400 }
+  );
 };
 
-export const POST = async (request: NextRequest) => {
+export const POST = async (
+  request: NextRequest
+): Promise<NextResponse<TApiCall>> => {
   try {
-    const { name, message, authToken } = await request.json();
+    const body = (await request.json()) as TInvitePostBody;
+    const { name, message, authToken } = body;
 
     if (!name || !message)
-      return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: 'Missing fields' },
+        { status: 400 }
+      );
 
-    const decoded = jwt.verify(authToken, secret);
+    // TODO: fix to build
+    const decoded = jwt.verify(authToken, JWT_SECRET);
 
     await addInvitation(decoded.userId, name, message);
 
-    return NextResponse.json({ success: true }, { status: 201 });
+    return NextResponse.json(
+      { success: true, message: 'Invitation created successfully' },
+      { status: 201 }
+    );
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(
-      { error: 'Failed to create invitation' },
+      { success: false, message: 'Failed to create invitation' },
       { status: 500 }
     );
   }
 };
 
-export const PATCH = async (request: NextRequest) => {
+export const PATCH = async (
+  request: NextRequest
+): Promise<NextResponse<TApiCall>> => {
   try {
-    const { ref, response } = (await request.json()) as {
-      ref: string;
-      response: 'yes' | 'no';
-    };
+    const body = (await request.json()) as TInvitePatchBody;
+    const { ref, response } = body;
 
     await updateInvitation(ref, response);
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    return NextResponse.json(
+      { success: true, message: 'Invitation updated successfully' },
+      { status: 200 }
+    );
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(
-      { error: 'Failed to update invitation' },
+      { success: false, message: 'Failed to update invitation' },
       { status: 500 }
     );
   }

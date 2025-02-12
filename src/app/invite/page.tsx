@@ -12,6 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { type TApiCall } from '@/types/api-call';
+import toast from 'react-hot-toast';
 
 const InvitePage = () => {
   const [invite, setInvite] = useState<TInvite | null>(null);
@@ -43,8 +45,12 @@ const InvitePage = () => {
         body: JSON.stringify({ ref, status }),
       });
 
-      if (!response.ok) {
-        console.error('Failed to update invitation status');
+      const apiReturn: TApiCall = await response.json();
+
+      if (apiReturn.success) {
+        // toast.success(apiReturn.message);
+      } else {
+        // toast.success(apiReturn.message);
       }
     } catch (error) {
       console.error('Error updating invitation status:', error);
@@ -60,15 +66,20 @@ const InvitePage = () => {
     const fetchInvite = async () => {
       const response = await fetch(`/api/invite?ref=${refParam}`);
 
-      if (response.ok) {
-        const data = (await response.json()) as TInvite;
-        console.log(data);
+      const apiReturn: TApiCall = await response.json();
 
-        if (Object.keys(data).length === 0) location.href = '/';
-        setInvite(data.data);
-        updateInvitationStatus(data.data.ref, 'OPEN');
+      if (apiReturn.success) {
+        // toast.success(apiReturn.message);
+
+        const { invitation } = apiReturn.data as { invitation: TInvite };
+
+        console.log(invitation);
+        if (invitation === undefined) location.href = '/';
+
+        setInvite(invitation);
+        updateInvitationStatus(invitation.ref, 'OPEN');
       } else {
-        console.log('KO');
+        toast.error(apiReturn.message);
       }
     };
     fetchInvite();
@@ -98,12 +109,14 @@ const InvitePage = () => {
     setAnswer(true);
     setMessage(getRandomMessage(yesMessages));
     setBackgroundClass('bg-fuchsia-200 animate-hearts');
+    setConfirmationMessage('');
   };
   const handleNoClick = () => {
     setSelectedButton('no');
     setAnswer(false);
     setMessage(getRandomMessage(noMessages));
     setBackgroundClass('bg-gray-800 animate-broken-hearts');
+    setConfirmationMessage('');
   };
 
   const handleSubmitAnswer = async () => {
@@ -119,15 +132,21 @@ const InvitePage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ref: invite.ref, // Assure-toi que 'invite.ref' est bien présent
-          response: selectedButton, // 'yes' ou 'no'
+          ref: invite.ref,
+          response: selectedButton,
         }),
       });
 
-      if (response.ok) {
+      const apiReturn: TApiCall = await response.json();
+
+      if (apiReturn.success) {
+        // toast.success(apiReturn.message);
+
         setConfirmationMessage('Your response has been successfully sent! 🎉');
         updateInvitationStatus(invite.ref, 'COMPLETED');
       } else {
+        // toast.success(apiReturn.message);
+
         setConfirmationMessage(
           'Oops, something went wrong. Please try again! 😿'
         );

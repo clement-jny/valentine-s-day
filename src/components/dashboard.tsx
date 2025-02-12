@@ -18,6 +18,8 @@ import { useForm } from 'react-hook-form';
 import { inviteSchema, TInviteSchema } from '@/lib/zod-schemas';
 import { TInvite } from '@/types/invite';
 import { Textarea } from '@/components/ui/textarea';
+import toast from 'react-hot-toast';
+import { type TApiCall } from '@/types/api-call';
 
 export const Dashboard = () => {
   const authToken = localStorage.getItem('authToken');
@@ -36,14 +38,21 @@ export const Dashboard = () => {
         body: JSON.stringify({ authToken }),
         headers: { 'Content-Type': 'application/json' },
       });
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
 
-        setUserId(data.userId);
-        setUsername(data.username);
+      const apiReturn: TApiCall = await response.json();
+
+      if (apiReturn.success) {
+        // toast.success(apiReturn.message);
+
+        const { userId, username } = apiReturn.data as {
+          userId: number;
+          username: string;
+        };
+
+        setUserId(userId);
+        setUsername(username);
       } else {
-        console.log('KO');
+        toast.error(apiReturn.message);
       }
     };
     fetchMe();
@@ -51,13 +60,17 @@ export const Dashboard = () => {
     const fetchInvitations = async () => {
       const response = await fetch(`/api/invite?authToken=${authToken}`);
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setInvitations(data.data);
+      const apiReturn: TApiCall = await response.json();
+
+      if (apiReturn.success) {
+        // toast.success(apiReturn.message);
+
+        const { invitations } = apiReturn.data as { invitations: TInvite[] };
+
+        console.log(invitations);
+        setInvitations(invitations);
       } else {
-        // Gestion des erreurs d'authentification
-        console.log('KO');
+        toast.error(apiReturn.message);
       }
     };
     fetchInvitations();
@@ -81,16 +94,15 @@ export const Dashboard = () => {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      location.reload();
+    const apiReturn: TApiCall = await response.json();
 
-      // TODO: toast success
+    if (apiReturn.success) {
+      toast.success(apiReturn.message);
+      toast.success('Reloading... Please wait.');
+
+      setTimeout(() => location.reload(), 1000);
     } else {
-      // Gestion des erreurs d'authentification
-      console.log('KO');
-      // TODO: toast error from response
+      toast.error(apiReturn.message);
     }
   };
 
@@ -105,7 +117,11 @@ export const Dashboard = () => {
             className='bg-pink-500 hover:bg-pink-600 text-white rounded-lg py-2'
             onClick={() => {
               localStorage.removeItem('authToken');
-              location.reload();
+
+              toast.success('Logout successful!');
+              toast.success('Redirecting... Please wait.');
+
+              setTimeout(() => location.reload(), 1000);
             }}>
             Logout
           </Button>
