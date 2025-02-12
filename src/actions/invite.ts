@@ -14,6 +14,14 @@ export const getInvitationsByUserId = async (userId: number) => {
   return data;
 };
 
+export const getInvitationByRef = async (ref: string) => {
+  const data = await db
+    .select()
+    .from(inviteTable)
+    .where(eq(inviteTable.ref, ref));
+  return data[0];
+};
+
 export const addInvitation = async (
   userId: number,
   name: string,
@@ -25,4 +33,11 @@ export const addInvitation = async (
   await db
     .insert(inviteTable)
     .values({ userId, ref, name, message, accessLink });
+};
+
+export const updateInvitation = async (ref: string, response: string) => {
+  await db
+    .update(inviteTable)
+    .set({ response })
+    .where(eq(inviteTable.ref, ref));
 };
