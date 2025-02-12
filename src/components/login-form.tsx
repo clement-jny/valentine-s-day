@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import {
   Form,
   FormControl,
@@ -18,8 +17,12 @@ import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { loginSchema, TLoginSchema } from '@/lib/zod-schemas';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+// import { useAuth } from '@/context/AuthContext';
+// import { type TUser } from '@/types/user';
 
 const LoginForm = () => {
+  // const { setAuth } = useAuth();
+
   const form = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -28,9 +31,31 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (values: TLoginSchema) => {
+  const onSubmit = async (values: TLoginSchema) => {
     console.log('login form');
     console.log(values);
+
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ ...values }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+
+      // TODO: toast success
+
+      // const { token, user } = data;
+
+      // Mettre à jour le contexte avec le JWT et l'utilisateur
+      // setAuth(user, token);
+    } else {
+      // Gestion des erreurs d'authentification
+      console.log('KO');
+      // TODO: toast error from response
+    }
   };
 
   return (

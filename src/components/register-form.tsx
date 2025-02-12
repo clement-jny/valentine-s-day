@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import {
   Form,
   FormControl,
@@ -29,9 +28,26 @@ const RegisterForm = () => {
     },
   });
 
-  const onSubmit = (values: TRegisterSchema) => {
+  const onSubmit = async (values: TRegisterSchema) => {
     console.log('register form');
     console.log(values);
+
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ ...values }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+
+      // TODO: toast success
+    } else {
+      // Gestion des erreurs d'authentification
+      console.log('KO');
+      // TODO: toast error from response
+    }
   };
 
   return (
