@@ -105,12 +105,14 @@ const InvitePage = () => {
     setAnswer(true);
     setMessage(getRandomMessage(yesMessages));
     setBackgroundClass('bg-fuchsia-200 animate-hearts');
+    setConfirmationMessage('');
   };
   const handleNoClick = () => {
     setSelectedButton('no');
     setAnswer(false);
     setMessage(getRandomMessage(noMessages));
     setBackgroundClass('bg-gray-800 animate-broken-hearts');
+    setConfirmationMessage('');
   };
 
   const handleSubmitAnswer = async () => {
