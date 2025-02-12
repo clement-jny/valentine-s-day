@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { getByUsername } from '@/actions/user';
 import { loginSchema, TLoginSchema } from '@/lib/zod-schemas';
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export const POST = async (request: NextRequest) => {
   try {
@@ -23,8 +26,12 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
+    // Générer un JWT après la validation des identifiants
+    const payload = { userId: user.uuid, username: user.username };
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }); // Le token expire dans 1 heure
+
     return NextResponse.json(
-      { message: 'Login successful', userId: user.uuid },
+      { message: 'Login successful', user, token },
       { status: 200 }
     );
   } catch (error) {
