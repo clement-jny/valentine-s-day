@@ -17,6 +17,8 @@ import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { registerSchema, TRegisterSchema } from '@/lib/zod-schemas';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import toast from 'react-hot-toast';
+import { type TApiCall } from '@/types/api-call';
 
 const RegisterForm = () => {
   const form = useForm<TRegisterSchema>({
@@ -38,16 +40,19 @@ const RegisterForm = () => {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      location.reload();
+    const apiReturn: TApiCall = await response.json();
 
-      // TODO: toast success
+    if (apiReturn.success) {
+      console.log(apiReturn);
+
+      toast.success(apiReturn.message);
+      toast.success('Redirecting... Please wait.');
+
+      setTimeout(() => {
+        location.reload();
+      }, 2000);
     } else {
-      // Gestion des erreurs d'authentification
-      console.log('KO');
-      // TODO: toast error from response
+      toast.error(apiReturn.message);
     }
   };
 
