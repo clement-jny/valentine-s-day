@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Update invit status on invite page
+- *(api)* New route for updating status
+- Add new method in action to change status
+
+### Changed
+
+- *(type)* Update type and enum
+
+### Documentation
+
+- *(changelog)* Update CHANGELOG in Auto Release
+
 ## [1.0.0] - 2025-02-12
 
 ### Added
@@ -102,5 +118,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - *(other)* Delete auth context
 - *(other)* Initial commit from Create Next App
 
+[unreleased]: https://github.com/clement-jny/valentine-s-day/compare/v1.0.0..HEAD
 [1.0.0]: https://github.com/clement-jny/valentine-s-day/releases/tag/v1.0.0
 
