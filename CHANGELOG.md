@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- *(db)* Create new invite actions
+- *(api)* Update current route  & add new
+- Create invite answer page
+- Display response message
+- *(db)* Change boolean status to enum status
 - Add logout button
 - *(db)* Use new column status
 - *(db)* Add status on invite
@@ -75,9 +80,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - *(changelog)* Update CHANGELOG in Auto Changelog
 - *(changelog)* Update CHANGELOG in Auto Changelog
 - *(changelog)* Update CHANGELOG in Auto Changelog
+- *(changelog)* Update CHANGELOG in Auto Changelog
 
 ### Maintenance
 
+- Update jwt expires
 - Dashboard is now a component
 - Remove auth context call, set token in local and reload
 - Remove auth context call
@@ -88,6 +95,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Other
 
+- *(other)* Delete old preview page
 - *(other)* Delete auth context
 - *(other)* Initial commit from Create Next App
 
