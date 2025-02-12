@@ -49,9 +49,7 @@ const LoginForm = () => {
       localStorage.setItem('authToken', token);
       toast.success('Redirecting... Please wait.');
 
-      setTimeout(() => {
-        location.reload();
-      }, 2000);
+      setTimeout(() => location.reload(), 1000);
     } else {
       toast.error(apiReturn.message);
     }
