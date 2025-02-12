@@ -28,7 +28,7 @@ export const POST = async (request: NextRequest) => {
 
     // Générer un JWT après la validation des identifiants
     const payload = { userId: user.uuid, username: user.username };
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }); // Le token expire dans 1 heure
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' }); // Le token expire dans 24 heure
 
     return NextResponse.json(
       { message: 'Login successful', token },

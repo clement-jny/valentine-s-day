@@ -132,6 +132,11 @@ export const Dashboard = () => {
                   <p className='text-pink-500'>
                     Date: {new Date(invite.createdAt).toLocaleDateString()}
                   </p>
+                  {invite.response ? (
+                    <p className='text-pink-500'>Response: {invite.response}</p>
+                  ) : (
+                    <p className='text-pink-500'>Response: No response yet</p>
+                  )}
                   <a
                     href={invite.accessLink}
                     target='_blank'

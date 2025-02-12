@@ -4,7 +4,7 @@ import {
   varchar,
   text,
   timestamp,
-  boolean,
+  mysqlEnum,
 } from 'drizzle-orm/mysql-core';
 
 export const userTable = mysqlTable('user', {
@@ -26,7 +26,9 @@ export const inviteTable = mysqlTable('invite', {
   message: text().notNull(), // Message personnalisé
   response: text(), // Réponse de l'invité (optionnelle)
   accessLink: varchar('access_link', { length: 255 }).notNull().unique(), // Lien unique d'accès
-  status: boolean().notNull(), // Statut de l'invitation (0 = inactif, 1 = actif)
+  status: mysqlEnum(['NOT_OPEN', 'OPEN', 'COMPLETED'])
+    .default('NOT_OPEN')
+    .notNull(), // Statut de l'invitation ('NOT_OPEN', 'OPEN', 'COMPLETED')
   createdAt: timestamp('created_at').defaultNow().notNull(), // Date de création
   updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(), // Date de mise à jour
 });
