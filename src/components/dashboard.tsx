@@ -106,6 +106,25 @@ export const Dashboard = () => {
     }
   };
 
+  const deleteInvitation = async (ref: string) => {
+    const response = await fetch('/api/invite', {
+      method: 'DELETE',
+      body: JSON.stringify({ ref }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    const apiReturn: TApiCall = await response.json();
+
+    if (apiReturn.success) {
+      toast.success(apiReturn.message);
+      toast.success('Reloading... Please wait.');
+
+      setTimeout(() => location.reload(), 1000);
+    } else {
+      toast.error(apiReturn.message);
+    }
+  };
+
   return (
     <div className='min-h-screen bg-pink-100 p-6'>
       <div className='max-w-2xl mx-auto space-y-6'>
@@ -159,6 +178,12 @@ export const Dashboard = () => {
                     className='text-pink-400 underline'>
                     Access Invitation
                   </a>
+
+                  <Button
+                    variant={'destructive'}
+                    onClick={() => deleteInvitation(invite.ref)}>
+                    Delete
+                  </Button>
                 </div>
               ))}
             </div>
