@@ -14,4 +14,5 @@ export enum EStatus {
   NOT_OPEN,
   OPEN,
   COMPLETED,
+  DELETED,
 }
