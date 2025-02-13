@@ -4,14 +4,19 @@
 import { db } from '@/db';
 import { inviteTable } from '@/db/schema';
 import { EStatus } from '@/types/invite';
-import { eq } from 'drizzle-orm';
+import { and, eq, not } from 'drizzle-orm';
 import { randomBytes } from 'node:crypto';
 
 export const getInvitationsByUserId = async (userId: number) => {
   const data = await db
     .select()
     .from(inviteTable)
-    .where(eq(inviteTable.userId, userId));
+    .where(
+      and(
+        eq(inviteTable.userId, userId),
+        not(eq(inviteTable.status, 'DELETED'))
+      )
+    );
   return data;
 };
 
