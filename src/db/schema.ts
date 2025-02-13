@@ -26,7 +26,7 @@ export const inviteTable = mysqlTable('invite', {
   message: text().notNull(), // Message personnalisé
   response: text(), // Réponse de l'invité (optionnelle)
   accessLink: varchar('access_link', { length: 255 }).notNull().unique(), // Lien unique d'accès
-  status: mysqlEnum(['NOT_OPEN', 'OPEN', 'COMPLETED'])
+  status: mysqlEnum(['NOT_OPEN', 'OPEN', 'COMPLETED', 'DELETED'])
     .default('NOT_OPEN')
     .notNull(), // Statut de l'invitation ('NOT_OPEN', 'OPEN', 'COMPLETED')
   createdAt: timestamp('created_at').defaultNow().notNull(), // Date de création

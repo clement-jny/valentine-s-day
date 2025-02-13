@@ -4,6 +4,7 @@ import {
   addInvitation,
   getInvitationByRef,
   updateInvitation,
+  updateInvitationStatus,
 } from '@/actions/invite';
 import jwt, { type Secret, JwtPayload } from 'jsonwebtoken';
 import { type TApiCall } from '@/types/api-call';
@@ -19,6 +20,10 @@ type TInvitePostBody = {
 type TInvitePatchBody = {
   ref: string;
   response: 'yes' | 'no';
+};
+
+type TInviteDeleteBody = {
+  ref: string;
 };
 
 export const GET = async (
@@ -120,6 +125,28 @@ export const PATCH = async (
 
     return NextResponse.json(
       { success: true, message: 'Invitation updated successfully' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error:', error);
+    return NextResponse.json(
+      { success: false, message: 'Failed to update invitation' },
+      { status: 500 }
+    );
+  }
+};
+
+export const DELETE = async (
+  request: NextRequest
+): Promise<NextResponse<TApiCall>> => {
+  try {
+    const body = (await request.json()) as TInviteDeleteBody;
+    const { ref } = body;
+
+    updateInvitationStatus(ref, 'DELETED');
+
+    return NextResponse.json(
+      { success: true, message: 'Invitation status updated successfully' },
       { status: 200 }
     );
   } catch (error) {
