@@ -4,24 +4,12 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { inviteSchema, TInviteSchema } from '@/lib/zod-schemas';
 import { type TInvitation } from '@/types';
-import { Textarea } from '@/components/ui/textarea';
 import toast from 'react-hot-toast';
 import { type TApiCall } from '@/types/api-call';
+import { InvitationForm } from './invitation-form';
 
-export const Dashboard = () => {
+const Dashboard = () => {
   const authToken = localStorage.getItem('authToken');
 
   const [userId, setUserId] = useState<number | null>(null);
@@ -78,36 +66,6 @@ export const Dashboard = () => {
     fetchInvitations();
   }, [authToken, userId]);
 
-  const form = useForm<TInviteSchema>({
-    resolver: zodResolver(inviteSchema),
-    defaultValues: {
-      name: '',
-      message: '',
-    },
-  });
-
-  const onSubmit = async (values: TInviteSchema) => {
-    console.log('invite form');
-    console.log(values);
-
-    const response = await fetch('/api/invite', {
-      method: 'POST',
-      body: JSON.stringify({ ...values, authToken }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    const apiReturn: TApiCall = await response.json();
-
-    if (apiReturn.success) {
-      toast.success(apiReturn.message);
-      toast.success('Reloading... Please wait.');
-
-      setTimeout(() => location.reload(), 1000);
-    } else {
-      toast.error(apiReturn.message);
-    }
-  };
-
   const deleteInvitation = async (ref: string) => {
     const response = await fetch('/api/invite', {
       method: 'DELETE',
@@ -151,7 +109,7 @@ export const Dashboard = () => {
         <Card className='bg-white shadow-xl rounded-xl p-6'>
           <CardHeader>
             <CardTitle className='text-pink-600 text-2xl font-bold'>
-              Your Invitations
+              Your invitations
             </CardTitle>
           </CardHeader>
 
@@ -195,59 +153,17 @@ export const Dashboard = () => {
         <Card>
           <CardHeader>
             <CardTitle className='text-pink-600 text-xl font-bold mb-4'>
-              Create an Invitation
+              Create an invitation
             </CardTitle>
           </CardHeader>
 
           <CardContent>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className='space-y-4'>
-                <FormField
-                  control={form.control}
-                  name='name'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          className='mb-2 border-pink-300 focus:ring-pink-400'
-                          {...field}
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name='message'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Message</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          className='mb-2 border-pink-300 focus:ring-pink-400'
-                          {...field}
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button className='w-full bg-pink-500 hover:bg-pink-600 text-white rounded-lg py-2'>
-                  Add Invitation
-                </Button>
-              </form>
-            </Form>
+            <InvitationForm action='create' />
           </CardContent>
         </Card>
       </div>
     </div>
   );
 };
+
+export { Dashboard };
