@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { EStatus, type TInvite } from '@/types/invite';
+import { EInvitationStatus, type TInvitation } from '@/types';
 import { useEffect, useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,8 +15,10 @@ import {
 import { type TApiCall } from '@/types/api-call';
 import toast from 'react-hot-toast';
 
+// TODO: if deleted, inform that this invite is deleted
+
 const InvitePage = () => {
-  const [invite, setInvite] = useState<TInvite | null>(null);
+  const [invite, setInvite] = useState<TInvitation | null>(null);
 
   const [answer, setAnswer] = useState<boolean | null>(null);
   const [message, setMessage] = useState<string>('');
@@ -34,7 +36,7 @@ const InvitePage = () => {
 
   const updateInvitationStatus = async (
     ref: string,
-    status: keyof typeof EStatus
+    status: keyof typeof EInvitationStatus
   ) => {
     try {
       const response = await fetch(`/api/invite/status`, {
@@ -71,7 +73,7 @@ const InvitePage = () => {
       if (apiReturn.success) {
         // toast.success(apiReturn.message);
 
-        const { invitation } = apiReturn.data as { invitation: TInvite };
+        const { invitation } = apiReturn.data as { invitation: TInvitation };
 
         console.log(invitation);
         if (invitation === undefined) location.href = '/';

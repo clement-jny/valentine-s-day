@@ -16,7 +16,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { inviteSchema, TInviteSchema } from '@/lib/zod-schemas';
-import { TInvite } from '@/types/invite';
+import { type TInvitation } from '@/types';
 import { Textarea } from '@/components/ui/textarea';
 import toast from 'react-hot-toast';
 import { type TApiCall } from '@/types/api-call';
@@ -27,7 +27,7 @@ export const Dashboard = () => {
   const [userId, setUserId] = useState<number | null>(null);
   const [username, setUsername] = useState<string | null>(null);
 
-  const [invitations, setInvitations] = useState<TInvite[]>([]);
+  const [invitations, setInvitations] = useState<TInvitation[]>([]);
 
   useEffect(() => {
     console.log(authToken);
@@ -65,7 +65,9 @@ export const Dashboard = () => {
       if (apiReturn.success) {
         // toast.success(apiReturn.message);
 
-        const { invitations } = apiReturn.data as { invitations: TInvite[] };
+        const { invitations } = apiReturn.data as {
+          invitations: TInvitation[];
+        };
 
         console.log(invitations);
         setInvitations(invitations);

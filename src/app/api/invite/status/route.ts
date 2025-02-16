@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { updateInvitationStatus } from '@/actions/invite';
-import { EStatus } from '@/types/invite';
+import { EInvitationStatus } from '@/types';
 import { type TApiCall } from '@/types/api-call';
 
 type TInviteStatusPatchBody = {
   ref: string;
-  status: keyof typeof EStatus;
+  status: keyof typeof EInvitationStatus;
 };
 
 export const PATCH = async (
@@ -21,7 +21,7 @@ export const PATCH = async (
     );
   }
 
-  if (!Object.values(EStatus).includes(status)) {
+  if (!Object.values(EInvitationStatus).includes(status)) {
     return NextResponse.json(
       { success: false, message: 'Invalid status' },
       { status: 400 }

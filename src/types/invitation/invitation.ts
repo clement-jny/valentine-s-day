@@ -1,4 +1,4 @@
-export type TInvite = {
+type TInvitation = {
   uuid: number;
   userId: number;
   ref: string;
@@ -6,13 +6,15 @@ export type TInvite = {
   message: string;
   response?: string;
   accessLink: string;
-  status: EStatus;
+  status: EInvitationStatus;
   createdAt: Date;
 };
 
-export enum EStatus {
+enum EInvitationStatus {
   NOT_OPEN,
   OPEN,
   COMPLETED,
   DELETED,
 }
+
+export type { TInvitation, EInvitationStatus };

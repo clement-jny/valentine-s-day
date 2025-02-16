@@ -3,7 +3,7 @@
 // import { revalidatePath } from 'next/cache';
 import { db } from '@/db';
 import { inviteTable } from '@/db/schema';
-import { EStatus } from '@/types/invite';
+import { EInvitationStatus } from '@/types';
 import { and, eq, not } from 'drizzle-orm';
 import { randomBytes } from 'node:crypto';
 
@@ -50,7 +50,7 @@ export const updateInvitation = async (ref: string, response: string) => {
 
 export const updateInvitationStatus = async (
   ref: string,
-  newStatus: keyof typeof EStatus
+  newStatus: keyof typeof EInvitationStatus
 ) => {
   const invitation = await db
     .select()
